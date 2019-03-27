@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Video Info</title>
+</head>
+<body>
+    <h1>Vídeo Info</h1>
+
+    <form>
+        <div>
+            <label>Selecciona un vídeo</label><br>
+            <input type="file" accept="video/*" value="Añade un vídeo"/>
+        </div><br>
+        <button type="submit">Obtener info</button>
+    </form>
+
+
+    <script>
+        document.querySelector('form').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const file = document.querySelector('input').files[0];
+
+
+        })
+    </script>
+</body>
+</html>
