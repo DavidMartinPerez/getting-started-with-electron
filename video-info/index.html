@@ -20,15 +20,15 @@
 
     <script>
         const electron = window.require('electron');
-        const { ipcRender } = electron;
-        console.log( ipcRender )
+        const { ipcRenderer } = electron;
+        console.log( ipcRenderer )
 
         document.querySelector('form').addEventListener('submit', (event) => {
             event.preventDefault();
 
             const { path } = document.querySelector('input').files[0];
 
-            ipcRender.send('video:submit', path)
+            ipcRenderer.send('video:submit', path)
         })
     </script>
 </body>

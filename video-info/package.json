@@ -9,7 +9,9 @@
   "author": "David Martin Perez",
   "license": "ISC",
   "dependencies": {
-    "electron": "^4.1.1",
     "fluent-ffmpeg": "^2.1.2"
+  },
+  "devDependencies": {
+    "electron": "^4.1.1"
   }
 }
