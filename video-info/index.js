@@ -3,10 +3,15 @@ const ffmpeg = require('fluent-ffmpeg');
 
 const { app, BrowserWindow, ipcMain } = electron;
 
+let mainWindow; //Pantalla principal
+
 app.on('ready', () => {
     console.log('App is now ready');
 
-    const mainWindow = new BrowserWindow({});
+    mainWindow = new BrowserWindow({
+        width: 360,
+        height: 680
+    });
     mainWindow.loadURL(`file://${__dirname}/index.html`);
 
     console.log(ipcMain)
@@ -19,6 +24,8 @@ app.on('ready', () => {
 
 })
 
-ipcMain.on('video:submit', () => {
-    console.log("Hey")
+ipcMain.on('video:submit', ( event, path) => {
+    ffmpeg.ffprobe(path, ( err, metadata ) => {
+        mainWindow.webContents.send('video:metadata',metadata.format.duration)
+    })
 })
