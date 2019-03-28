@@ -1,0 +1,14 @@
+{
+  "name": "to-dos",
+  "version": "1.0.0",
+  "description": "Aplicacion de pendientes",
+  "main": "index.js",
+  "scripts": {
+    "electron": "electron ."
+  },
+  "author": "David Martin Perez",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^4.1.1"
+  }
+}
