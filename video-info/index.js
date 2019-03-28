@@ -4,10 +4,11 @@ const { app, BrowserWindow, ipcMain } = electron;
 
 app.on('ready', () => {
     console.log('App is now ready');
-    console.log(electron.ipcRenderer)
 
     const mainWindow = new BrowserWindow({});
     mainWindow.loadURL(`file://${__dirname}/index.html`);
+
+    console.log(ipcMain)
 
     // ######3######################## Comunicación con electron -> webview ########################################
     // MainWindow (ipcRenderer.send) -- Webview envia evento a electron -> Electron App (ipcMain.on)

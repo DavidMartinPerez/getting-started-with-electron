@@ -19,9 +19,9 @@
 
 
     <script>
-        const electron = require('ipc-render');
-        console.log( electron.ipcRender )
+        const electron = window.require('electron');
         const { ipcRender } = electron;
+        console.log( ipcRender )
 
         document.querySelector('form').addEventListener('submit', (event) => {
             event.preventDefault();
