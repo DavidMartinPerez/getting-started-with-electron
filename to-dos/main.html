@@ -7,6 +7,29 @@
     <title></title>
 </head>
 <body>
-    
+    <h1>Tareas pendientes:</h1>
+    <ul></ul>
+
+
+
+    <script>
+        let electron = require('electron');
+        let { ipcRenderer } = electron;
+        let list = document.querySelector('ul');
+
+        //Añadir tarea a la lista
+        ipcRenderer.on('todo:add', (event, todo) => {
+            const li = document.createElement('li')
+            const text = document.createTextNode(todo)
+
+            li.appendChild(text)
+            list.appendChild(li)
+        })
+
+        //Eliminar todas las tareas
+        ipcRenderer.on('todos:delete', () => {
+            list.innerHTML = "";
+        })
+    </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 const electron = require('electron')
 
-const { app, BrowserWindow, Menu } = electron;
+const { app, BrowserWindow, Menu, ipcMain } = electron;
 
 let mainWindow;
 let newToDoWindow;
@@ -16,9 +16,43 @@ app.on('ready', () => {
     //Si el usuario pulsa el botón cerra de la aplicación cerraremos todos los procesos
     mainWindow.on('closed', () => app.quit() )
 
-    const mainMenu = Menu.buildFromTemplate(menuTemplate)
-    Menu.setApplicationMenu(mainMenu);
+    //Evento focus en window para cambiar template
+    mainWindow.on('focus', () => {
+        createMenuTemplate(menuTemplate);
+    })
 });
+
+//Abrimos la pantalla de añadir nota
+createNewTodoWindow = () => {
+    newToDoWindow = new BrowserWindow({
+        height:400,
+        width:300,
+        title: 'Añade una nueva tarea'
+    });
+
+    newToDoWindow.loadURL(`file://${__dirname}/new-todo.html`);
+    newToDoWindow.on('closed', ()=> newToDoWindow = null); //Con esto limpiamos la memoria RAM de esta referencia
+
+    //Evento focus en window para cambiar template
+    newToDoWindow.on('focus', () => {
+        createMenuTemplate(menuTemplateNewToDo)
+    })
+}
+
+//Evento de escucha para crear una nueva tarea
+ipcMain.on('todo:add', (event, todo) => {
+    mainWindow.webContents.send('todo:add', todo)
+    newToDoWindow.close();
+})
+
+
+
+
+//TEMPLATES
+createMenuTemplate = (template) => {
+    let menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu);
+}
 
 const menuTemplate = [
     {
@@ -28,7 +62,16 @@ const menuTemplate = [
                 label: 'Nueva tarea',
                 accelerator: process.platform === "darwin" ? 'Command+N' : 'Ctrl+N',
                 click(){
-                    createNewTodoWindow()
+                    if( newToDoWindow == null ) {
+                        createNewTodoWindow()
+                    } else {
+                        newToDoWindow.focus();
+                    }
+                }
+            },{
+                label: 'Eliminar todos',
+                click() {
+                    mainWindow.webContents.send('todos:delete')
                 }
             },{
                 label: 'Salir',
@@ -36,42 +79,35 @@ const menuTemplate = [
                 click() {
                 app.quit();
                 }
-
             }
         ]
     }
 ]
-
-createNewTodoWindow = () => {
-    newToDoWindow = new BrowserWindow({
-        height:400,
-        width:300,
-        title: 'Añade una nueva tarea'
-    });
-
-    newToDoWindow.loadURL(`file://${__dirname}/new-todo.html`);
-}
+const menuTemplateNewToDo = []
 
 
 
-//Comprobaciones del sistema
+//COMPROBACIONES DEL SO
 if( process.platform === 'darwin' ) {
     menuTemplate.unshift({});
 }
 
 
 if ( process.env.NODE_ENV !== 'production' ) {
-    menuTemplate.push({
-        label: 'Developer',
-        submenu: [
-            {
-                label: 'Alternar Herramientas de desarrollador',
-                accelerator: process.platform === "darwin" ? 'Command+Alt+I' : 'Ctrl+Shift+I',
-                click(item, focusedWindow) {
-                    focusedWindow.toggleDevTools();
+    menuTemplate.push(
+        { role: 'reload' },
+        {
+            label: 'Developer',
+            submenu: [
+                {
+                    label: 'Alternar Herramientas de desarrollador',
+                    accelerator: process.platform === "darwin" ? 'Command+Alt+I' : 'Ctrl+Shift+I',
+                    click(item, focusedWindow) {
+                        focusedWindow.toggleDevTools();
+                    }
                 }
-            }
-        ],
+            ],
 
-    })
+        }
+    )
 }
