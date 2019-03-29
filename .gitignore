@@ -76,3 +76,4 @@ typings/
 .fusebox/
 video-info/package-lock.json
 to-dos/package-lock.json
+tasky/package-lock.json
