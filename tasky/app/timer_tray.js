@@ -1,6 +1,6 @@
 const electron = require('electron')
 
-const { Tray } = electron;
+const { app, Tray, Menu } = electron;
 
 class TimerTray extends Tray{
 
@@ -11,6 +11,7 @@ class TimerTray extends Tray{
 
         this.setToolTip('Temporizador App')
         this.on( 'click', this.onClick.bind(this) )
+        this.on('right-click', this.onRightClick.bind(this))
     }
 
     onClick(event, bounds) {
@@ -29,7 +30,15 @@ class TimerTray extends Tray{
         }
     }
 
-
+    onRightClick(event, ) {
+        const menuConfig = Menu.buildFromTemplate([
+            {
+                label: 'Salir',
+                click: () => app.quit()
+            }
+        ])
+        this.popUpContextMenu(menuConfig)
+    }
 
     //Introducimos la posición inicial de la pantalla
     setPosition( container, x, y, width, height ) {

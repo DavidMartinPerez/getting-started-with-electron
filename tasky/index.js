@@ -2,34 +2,30 @@ const path = require('path')
 const electron = require('electron')
 
 const TimerTray = require('./app/timer_tray')
+const MainWindow = require('./app/main_window')
 
-const { app, BrowserWindow } = electron;
+const { app } = electron;
 
-const widthWindow = 320;
-const heightWindow = 640;
 let tray;
 let mainWindow;
 
 app.on('ready', () => {
-
+    if ( process.platform === 'darwin' ) {
+        app.dock.hide();
+    }
     createMainWindow();
-    createMainTray();
+    createTray();
 
 });
 
 
 createMainWindow = () => {
-    mainWindow = new BrowserWindow({
-        width: widthWindow,
-        height: heightWindow,
-        frame: false,
-        resizable: false,
-        show: false
-    });
-    mainWindow.loadURL(`file://${__dirname}/src/index.html`);
+    const htmlUrl = `file://${__dirname}/src/index.html`;
+
+    mainWindow = new MainWindow({htmlUrl});
 }
 
-createMainTray = () => {
+createTray = () => {
     const iconName = process.platform === 'win32' ? 'windows-icon.png' : 'iconTemplate.png';
     const iconPath = path.join(__dirname, `./src/assets/${iconName}`);
 
