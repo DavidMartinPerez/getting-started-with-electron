@@ -4,7 +4,7 @@ const electron = require('electron')
 const TimerTray = require('./app/timer_tray')
 const MainWindow = require('./app/main_window')
 
-const { app } = electron;
+const { app, ipcMain } = electron;
 
 let tray;
 let mainWindow;
@@ -31,3 +31,10 @@ createTray = () => {
 
     tray = new TimerTray({ iconPath, window: mainWindow });
 }
+
+//Eventos de escucha
+ipcMain.on('timer:update', (event, timeLeft) => {
+    //Comprobamos el sistema operativo para definir un title(No soportado en windows) o un tooltip
+    process.platform === "darwin" ? tray.setTitle(timeLeft) : tray.setToolTip(timeLeft);
+    
+})

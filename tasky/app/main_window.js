@@ -14,7 +14,9 @@ class MainWindow extends BrowserWindow{
             frame: false,
             resizable: false,
             show: false,
-            skipTaskbar: true
+            webPreferences: {
+                backgroundThrottling: true,
+            }
         })
 
         this.loadURL(options.htmlUrl);
