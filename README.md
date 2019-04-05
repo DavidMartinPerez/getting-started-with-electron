@@ -17,3 +17,13 @@
     * Comunicación entre Tasky y Windows.
     * Funcionamiento del 'backgroundThrottling'.
     * [TODO: Capturas]
+
+* Conversor de videos:
+    * Convertir videos en otros formatos.
+    * Abrir explorador de archivos.
+    * Crear archivos.
+    * Barra de carga de progreso.
+    * [TODO: Capturas]
+
+
+Certificado del curso impartido en Udemy: https://www.udemy.com/certificate/UC-FGVYZFBV/
