@@ -14,6 +14,9 @@ export const convertVideos = () => (dispatch, getState) => {
   let videos = getState().videos;
   console.log(videos)
   ipcRenderer.send('conversion:start', videos);
+  ipcRenderer.on('conversion:end', (event, { video, outputPath }) => {
+    dispatch({ type: VIDEO_COMPLETE, payload: { ...video, outputPath } })
+  })
 };
 
 
